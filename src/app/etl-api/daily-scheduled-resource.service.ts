@@ -8,14 +8,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 @Injectable()
 export class DailyScheduleResourceService {
     constructor(protected http: HttpClient, protected appSettingsService: AppSettingsService,
-                private cacheService: DataCacheService) { }
+        private cacheService: DataCacheService) { }
 
     public getUrl(reportName, selectedDate): string {
         return this.appSettingsService.getEtlRestbaseurl().trim() + `${reportName}/${selectedDate}`;
     }
 
     public getDailyVisits(params) {
-        console.log('Service:getDailyVisits', params);
+        // console.log('Service:getDailyVisits', params);
         if (!params.startIndex) {
             params.startIndex = '0';
         }
@@ -36,11 +36,11 @@ export class DailyScheduleResourceService {
             urlParamsObj['visitType'] = params.visitType;
         }
         if (params.encounterType && params.encounterType.length > 0) {
-            urlParamsObj['encounterType'] =  params.encounterType;
+            urlParamsObj['encounterType'] = params.encounterType;
         }
         const url = this.getUrl('daily-visits', params.startDate);
 
-        const urlParams: HttpParams = new HttpParams({fromObject: urlParamsObj});
+        const urlParams: HttpParams = new HttpParams({ fromObject: urlParamsObj });
 
         const request = this.http.get<any>(url, {
             params: urlParams
@@ -71,10 +71,10 @@ export class DailyScheduleResourceService {
             urlParamsObj['visitType'] = params.visitType;
         }
         if (params.encounterType && params.encounterType.length > 0) {
-            urlParamsObj['encounterType'] =  params.encounterType;
+            urlParamsObj['encounterType'] = params.encounterType;
         }
 
-        const urlParams: HttpParams = new HttpParams({fromObject: urlParamsObj});
+        const urlParams: HttpParams = new HttpParams({ fromObject: urlParamsObj });
 
         const url = this.getUrl('daily-appointments', params.startDate);
         const request = this.http.get<any>(url, {
@@ -106,10 +106,10 @@ export class DailyScheduleResourceService {
             urlParamsObj['visitType'] = params.visitType;
         }
         if (params.encounterType && params.encounterType.length > 0) {
-            urlParamsObj['encounterType'] =  params.encounterType;
+            urlParamsObj['encounterType'] = params.encounterType;
         }
 
-        const urlParams: HttpParams = new HttpParams({fromObject: urlParamsObj});
+        const urlParams: HttpParams = new HttpParams({ fromObject: urlParamsObj });
 
         const url = this.getUrl('daily-has-not-returned', params.startDate);
         const request = this.http.get<any>(url, {

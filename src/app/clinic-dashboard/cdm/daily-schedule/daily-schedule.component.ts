@@ -4,9 +4,11 @@ import { DatePipe } from '@angular/common';
 import { ClinicDashboardCacheService }
   from '../../services/clinic-dashboard-cache.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DailyScheduleBaseComponent
+import {
+  DailyScheduleBaseComponent
 } from '../../../clinic-schedule-lib/daily-schedule/daily-schedule.component';
-import { SelectDepartmentService
+import {
+  SelectDepartmentService
 } from '../../../program-visit-encounter-search/program-visit-encounter-search.service';
 import {
   ClinicFlowCacheService
@@ -16,7 +18,7 @@ import {
   templateUrl: '../../../clinic-schedule-lib/daily-schedule/daily-schedule.component.html'
 })
 export class CdmDailyScheduleComponent extends
-DailyScheduleBaseComponent implements OnInit, OnDestroy {
+  DailyScheduleBaseComponent implements OnInit, OnDestroy {
   public myDepartment = 'CDM';
   public routeSub: Subscription;
   public paramsSub: Subscription;
@@ -39,16 +41,16 @@ DailyScheduleBaseComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    console.log('cdm schedule loaded');
+    // console.log('cdm schedule loaded');
     this.setActiveTab();
     this.route
-    .queryParams
-    .subscribe((params) => {
-       if (params.startDate) {
-        this.selectedDate = params.startDate;
-        this.clinicFlowCache.setSelectedDate(this.selectedDate);
-       }
-    });
+      .queryParams
+      .subscribe((params) => {
+        if (params.startDate) {
+          this.selectedDate = params.startDate;
+          this.clinicFlowCache.setSelectedDate(this.selectedDate);
+        }
+      });
     this.selectDepartmentService.setDepartment(this.myDepartment);
     this.routeSub = this.route.parent.parent.params.subscribe((params) => {
       this.clinicDashboardCacheService.setCurrentClinic(params['location_uuid']);

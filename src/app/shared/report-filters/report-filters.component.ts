@@ -1,5 +1,5 @@
 
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 import {
   Component, OnInit, EventEmitter, ElementRef, forwardRef,
@@ -22,7 +22,7 @@ require('ion-rangeslider');
 
 @Component({
   selector: 'report-filters',
- // styleUrls: ['report-filters.component.css'],
+  // styleUrls: ['report-filters.component.css'],
   templateUrl: 'report-filters.component.html',
   styles: [`
     ng-select > div > div.multiple input {
@@ -89,7 +89,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   public locations: any;
 
   @Output()
-  public  endDateChange = new EventEmitter<Date>();
+  public endDateChange = new EventEmitter<Date>();
   private _startDate: Date;
   private _endDate: Date;
   private _report: string;
@@ -97,11 +97,11 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   private _gender: Array<any> = [];
   private _programs: Array<any> = [];
   constructor(private indicatorResourceService: IndicatorResourceService,
-              private dataAnalyticsDashboardService: DataAnalyticsDashboardService,
-              private programResourceService: ProgramResourceService,
-              private programWorkFlowResourceService: ProgramWorkFlowResourceService,
-              private elementRef: ElementRef,
-              private cd: ChangeDetectorRef) {
+    private dataAnalyticsDashboardService: DataAnalyticsDashboardService,
+    private programResourceService: ProgramResourceService,
+    private programWorkFlowResourceService: ProgramWorkFlowResourceService,
+    private elementRef: ElementRef,
+    private cd: ChangeDetectorRef) {
   }
   public get startDate(): Date {
     return this._startDate;
@@ -112,8 +112,8 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
     this.startDateChange.emit(this.startDate);
   }
 
-  public onChange = (_) => {};
-  public onTouched = () => {};
+  public onChange = (_) => { };
+  public onTouched = () => { };
 
   @Input()
   public set endDate(v: Date) {
@@ -132,7 +132,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   }
   @Input()
   public get selectedIndicators(): Array<any> {
-    return this._indicators ;
+    return this._indicators;
   }
   public set selectedIndicators(v: Array<any>) {
     this._indicators = v;
@@ -140,7 +140,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   }
   @Input()
   public get selectedPrograms(): Array<any> {
-    return this._programs ;
+    return this._programs;
   }
   public set selectedPrograms(v: Array<any>) {
     this._programs = v;
@@ -172,7 +172,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   public ngOnInit() {
     this.renderFilterControls();
     if (this.start && this.end) {
-      this.onAgeChangeFinish.emit({ageFrom: this.start, ageTo: this.end});
+      this.onAgeChangeFinish.emit({ ageFrom: this.start, ageTo: this.end });
     }
 
     // this._gender = this._gender.length > 0 ? this._gender : this.genderOptions;
@@ -182,7 +182,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
     }
     if (this._programs.length > 0) {
       this.selectedProgramTagsSelectedAll = true;
-    }else {
+    } else {
       this._programs = this.programOptions;
     }
     this.getCachedLocations();
@@ -199,32 +199,32 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
       this.getPrograms();
     }
   }
-   public getCachedLocations() {
-      if (this._report === 'hiv-summary-report') {
-        this.dataAnalyticsDashboardService.getSelectedIndicatorLocations().pipe(take(1)).subscribe(
-          (data)  => {
-            if (data) {
-              this.locations = data.locations;
-            }
-          });
-      } else if (this._report === 'hiv-summary-monthly-report' ||
+  public getCachedLocations() {
+    if (this._report === 'hiv-summary-report') {
+      this.dataAnalyticsDashboardService.getSelectedIndicatorLocations().pipe(take(1)).subscribe(
+        (data) => {
+          if (data) {
+            this.locations = data.locations;
+          }
+        });
+    } else if (this._report === 'hiv-summary-monthly-report' ||
       this._report === 'oncology-summary-monthly-report') {
-        this.dataAnalyticsDashboardService.getSelectedMonthlyIndicatorLocations().pipe(take(1)).subscribe(
-          (data)  => {
-            if (data) {
-              this.locations = data.locations;
-            }
-          });
-      } else {
-        this.dataAnalyticsDashboardService.getSelectedLocations().pipe(take(1)).subscribe(
-          (data)  => {
-            if (data) {
-              this.locations = data.locations;
-            }
-          });
-      }
+      this.dataAnalyticsDashboardService.getSelectedMonthlyIndicatorLocations().pipe(take(1)).subscribe(
+        (data) => {
+          if (data) {
+            this.locations = data.locations;
+          }
+        });
+    } else {
+      this.dataAnalyticsDashboardService.getSelectedLocations().pipe(take(1)).subscribe(
+        (data) => {
+          if (data) {
+            this.locations = data.locations;
+          }
+        });
+    }
 
-}
+  }
 
   public onIndicatorSelected(indicator) {
     this.selectedIndicators = indicator;
@@ -233,39 +233,39 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   public getIndicators() {
     let indicators = [];
     this.indicatorResourceService.getReportIndicators({
-     report: this.reportName
-   }).pipe(take(1)).subscribe(
-     (results: any[]) => {
+      report: this.reportName
+    }).pipe(take(1)).subscribe(
+      (results: any[]) => {
 
-       for (let data of results) {
-         for (let r in data) {
-           if (data.hasOwnProperty(r)) {
-             let id = data.name;
-             let text = data.label;
-             data['value'] = id;
-             data['label'] = text;
-           }
-         }
-         indicators.push(data);
-       }
-       this.indicatorOptions = indicators;
-     }
-   );
+        for (let data of results) {
+          for (let r in data) {
+            if (data.hasOwnProperty(r)) {
+              let id = data.name;
+              let text = data.label;
+              data['value'] = id;
+              data['label'] = text;
+            }
+          }
+          indicators.push(data);
+        }
+        this.indicatorOptions = indicators;
+      }
+    );
 
   }
 
   public getPrograms() {
     this.programResourceService.getPrograms().pipe(take(1)).subscribe((results: any[]) => {
-        if (results) {
-          this.programOptions = _.map(results, (result) => {
-            return {value: result.uuid, label: result.display};
-          });
-        }
-      });
+      if (results) {
+        this.programOptions = _.map(results, (result) => {
+          return { value: result.uuid, label: result.display };
+        });
+      }
+    });
   }
 
   public selectAll() {
-    if (this.indicatorOptions .length > 0) {
+    if (this.indicatorOptions.length > 0) {
       if (this.selectedIndicatorTagsSelectedAll === false) {
         this.selectedIndicatorTagsSelectedAll = true;
         this.selectedIndicators = this.indicatorOptions;
@@ -278,7 +278,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   }
 
   public selectAllPrograms() {
-    if (this.programOptions .length > 0) {
+    if (this.programOptions.length > 0) {
       if (this.selectedProgramTagsSelectedAll === false) {
         this.selectedProgramTagsSelectedAll = true;
         this.selectedPrograms = this.programOptions;
@@ -289,13 +289,13 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
     }
   }
   public getSelectedLocations(locs: any) {
-    console.log('Selected Locations',this._report,locs);
+    // console.log('Selected Locations',this._report,locs);
     if (this._report === 'hiv-summary-report') {
       this.dataAnalyticsDashboardService.setSelectedIndicatorLocations(locs);
       return;
     }
     if (this._report === 'hiv-summary-monthly-report' ||
-    this._report === 'oncology-summary-monthly-report') {
+      this._report === 'oncology-summary-monthly-report') {
       this.dataAnalyticsDashboardService.setSelectedMonthlyIndicatorLocations(locs);
       return;
     }
@@ -303,7 +303,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
   }
   public onGenderSelected(selectedGender) {
     this.selectedGender = selectedGender;
-    this.onGenderChange.emit( this.selectedGender);
+    this.onGenderChange.emit(this.selectedGender);
   }
   public onClickedGenerate() {
     this.generateReport.emit();
@@ -323,15 +323,15 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
       force_edges: true,
       keyboard: true,
       onFinish: (data) => {
-        this.onAgeChangeFinish.emit({ageFrom: data.from, ageTo: data.to});
+        this.onAgeChangeFinish.emit({ ageFrom: data.from, ageTo: data.to });
       },
       onChange: (data) => {
-        this.value = {ageFrom: data.from, ageTo: data.to};
+        this.value = { ageFrom: data.from, ageTo: data.to };
       }
     });
     this.initialized = true;
   }
-  public  onSelectedIndicators(v: Array<any>) {
+  public onSelectedIndicators(v: Array<any>) {
     this._indicators = v;
     this.onIndicatorChange.emit(this._indicators);
   }
@@ -350,7 +350,7 @@ export class ReportFiltersComponent implements OnInit, ControlValueAccessor, Aft
     }
   }
 
- public registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
- public registerOnTouched(fn: () => void): void { this.onTouched = fn; }
+  public registerOnChange(fn: (_: any) => void): void { this.onChange = fn; }
+  public registerOnTouched(fn: () => void): void { this.onTouched = fn; }
 
 }

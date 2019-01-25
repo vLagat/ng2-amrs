@@ -102,7 +102,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         private programService: ProgramResourceService,
         private fb: FormBuilder,
         private communityGroupMemberService: CommunityGroupMemberService,
-        private communityGroupLeaderService: CommunityGroupLeaderService) {}
+        private communityGroupLeaderService: CommunityGroupLeaderService) { }
 
     ngOnInit() {
         this.initProviderTypeAhead();
@@ -114,10 +114,10 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
     public initProviderTypeAhead() {
         const v = 'custom:(person:(uuid,display,attributes:(attributeType:(uuid),value,display)),uuid)';
         this.providerSuggest.pipe(debounceTime(350),
-        switchMap((term: string) => this.providerResourceService.searchProvider(term, false, v)))
-        .subscribe((data) => {
-          this.processProviders(data);
-        });
+            switchMap((term: string) => this.providerResourceService.searchProvider(term, false, v)))
+            .subscribe((data) => {
+                this.processProviders(data);
+            });
     }
 
     public initEditLeaderForm() {
@@ -153,7 +153,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
                 if (this.leadershipType === PEER && this.editLeaderForm.controls['peer'].value === this.currentLeader.person.uuid) {
                     this.editLeaderForm.controls['contacts'].patchValue(this.currentLeader.person.patientPhoneNumber);
                 } else {
-                        this.editLeaderForm.controls['contacts'].patchValue('');
+                    this.editLeaderForm.controls['contacts'].patchValue('');
                 }
             } else {
                 this.editLeaderForm.addControl('staff', staffleader);
@@ -174,7 +174,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
 
     get peerLeaderOptions() {
         return this.editLeaderForm.get('peer') as FormControl;
-      }
+    }
 
     get staffLeaderOptions() {
         return this.editLeaderForm.get('staff') as FormControl;
@@ -183,13 +183,13 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
     private listenToStaffLeaderControlChanges() {
         this.subscription.add(
             this.editLeaderForm.get('staff').valueChanges.subscribe((newValue) => {
-            if (newValue) {
-                const provider = _.find(this.providers, ($provider) => $provider.uuid === newValue);
-                this.editLeaderForm.controls['contacts'].patchValue(provider.person.patientPhoneNumber);
-                this.selectedLeader = provider;
-                this.initContactsForm(provider);
-            }
-        }));
+                if (newValue) {
+                    const provider = _.find(this.providers, ($provider) => $provider.uuid === newValue);
+                    this.editLeaderForm.controls['contacts'].patchValue(provider.person.patientPhoneNumber);
+                    this.selectedLeader = provider;
+                    this.initContactsForm(provider);
+                }
+            }));
     }
 
     private listenToPeerLeaderControlChanges() {
@@ -199,7 +199,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
                 this.editLeaderForm.controls['contacts'].patchValue(member.person.patientPhoneNumber);
                 this.selectedLeader = member;
                 this.initContactsForm(member);
-        }));
+            }));
     }
 
 
@@ -219,8 +219,8 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         this.providerLoading = false;
         const filteredProviders = _.filter(providers, (p: any) => !_.isNil(p.person));
         this.providers = filteredProviders
-        .map((provider) => provider.person['person'] = provider.person)
-        .map((provider) =>  new Patient(provider.person));
+            .map((provider) => provider.person['person'] = provider.person)
+            .map((provider) => new Patient(provider.person));
     }
 
 
@@ -228,7 +228,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
     public getCurrentLeader(allLeaders: any[], allMembers: any[]) {
         let currentLeader = _.filter(allLeaders, (leader) => leader.endDate == null)[0];
         if (currentLeader) {
-                currentLeader = this.generateLeaderObject(currentLeader, allMembers);
+            currentLeader = this.generateLeaderObject(currentLeader, allMembers);
         }
         return currentLeader;
     }
@@ -238,7 +238,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
     }
 
     public reloadData() {
-       const sub = this.communityGroupService.getGroupByUuid(this.group.uuid).subscribe((group) => {
+        const sub = this.communityGroupService.getGroupByUuid(this.group.uuid).subscribe((group) => {
             this.group = group;
             this.updatedGroup.emit(this.group);
             this.activeMembers = _.filter(group.cohortMembers, (member) => !member.endDate);
@@ -272,7 +272,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         let type = '';
         let match = [];
         if (cohortMembers.length > 0) {
-           match = _.find(cohortMembers, (member) => currentLeaderPersonUuid === member.patient.person.uuid);
+            match = _.find(cohortMembers, (member) => currentLeaderPersonUuid === member.patient.person.uuid);
         }
         _.isEmpty(match) ? type = STAFF : type = PEER;
         return type;
@@ -284,15 +284,15 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
 
     public showSuccessModal(successMsg: string) {
         const initialState = {
-          successMsg
+            successMsg
         };
         this.modalRefNested = this.modalService.show(SuccessModalComponent, {
-          initialState
+            initialState
         });
         setTimeout(() => {
             this.modalRefNested.hide();
         }, 2500);
-      }
+    }
 
 
     public getProvider(providerUuid) {
@@ -302,7 +302,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
                 .subscribe((provider) => {
                     this.provider = provider;
                 });
-        this.subscription.add(sub);
+            this.subscription.add(sub);
         }
     }
 
@@ -311,11 +311,11 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         if (this.currentLeader) {
             this.initEditLeaderForm();
         }
-        this.modalRef = this.modalService.show(modal, {class: 'modal-lg'});
+        this.modalRef = this.modalService.show(modal, { class: 'modal-lg' });
     }
 
     public showNestedModal(modal: TemplateRef<any>) {
-        this.modalRefNested = this.modalService.show(modal, {class: 'second'});
+        this.modalRefNested = this.modalService.show(modal, { class: 'second' });
     }
 
     public resetLeader(group) {
@@ -350,10 +350,10 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         const personUuid = value['staffLeader'] || value['peerLeader'];
         this.modalRef.hide();
         const sub = this.communityGroupLeaderService.addGroupLeader(this.group.uuid, personUuid, new Date())
-        .subscribe((res) => {
-            this.showSuccessModal('Successfully added group leader');
-            this.reloadData();
-        });
+            .subscribe((res) => {
+                this.showSuccessModal('Successfully added group leader');
+                this.reloadData();
+            });
         this.subscription.add(sub);
 
     }
@@ -365,32 +365,32 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
                 this.group = res;
                 this.updatedGroup.emit(this.group);
             });
-            this.subscription.add(sub);
+        this.subscription.add(sub);
     }
 
 
     public updateContacts(selectedLeader: any, formValue: any) {
-      console.log(formValue);
-      console.log(this.leaderContactsForm.value);
-      this.modalRefNested.hide();
-      const requests = [];
-      const contactTypes = Object.keys(formValue);
-      _.forEach(contactTypes, (contactType) => {
-        const attributeTypeUuid = this.getContactAttributeTypeUuid(contactType);
-        console.log(contactType, formValue[contactType]);
-        console.log(contactType, selectedLeader.person[contactType]);
-        if (formValue[contactType] !== selectedLeader.person[contactType]) {
-            requests.push(this.createAttribute(selectedLeader.person.uuid, attributeTypeUuid, formValue[contactType]));
-        }
-      });
-      const sub = combineLatest(requests).subscribe((updatedContacts) => {
-          this.showSuccessModal(`Successfully update contacts for ${selectedLeader.person.display}`);
-          this.updateContactsUIState(updatedContacts, selectedLeader);
-        },
-        (error) => {
-          console.log(error);
+        // console.log(formValue);
+        // console.log(this.leaderContactsForm.value);
+        this.modalRefNested.hide();
+        const requests = [];
+        const contactTypes = Object.keys(formValue);
+        _.forEach(contactTypes, (contactType) => {
+            const attributeTypeUuid = this.getContactAttributeTypeUuid(contactType);
+            //  console.log(contactType, formValue[contactType]);
+            //  console.log(contactType, selectedLeader.person[contactType]);
+            if (formValue[contactType] !== selectedLeader.person[contactType]) {
+                requests.push(this.createAttribute(selectedLeader.person.uuid, attributeTypeUuid, formValue[contactType]));
+            }
         });
-      this.subscription.add(sub);
+        const sub = combineLatest(requests).subscribe((updatedContacts) => {
+            this.showSuccessModal(`Successfully update contacts for ${selectedLeader.person.display}`);
+            this.updateContactsUIState(updatedContacts, selectedLeader);
+        },
+            (error) => {
+                console.log(error);
+            });
+        this.subscription.add(sub);
 
 
     }
@@ -399,59 +399,60 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         let program = null;
         let provider = null;
         this.program ? program = this.program : program = { name: null, value: null };
-        this.provider ? provider = this.provider : provider = {person: {display: null, uuid: null}};
-        this.state = {        editType: 'Edit',
-                              groupName: this.group.name,
-                              groupNo: this.groupNumber.value,
-                              facility:  {label: this.group.location['display'], value: this.group.location['uuid']},
-                              groupType: {label: this.group.cohortType['name'], value: this.group.cohortType['uuid']},
-                              groupProgram: {label: program['name'], value: program['uuid']},
-                              provider: {label: provider.person.display, value: provider.person.uuid},
-                              address: this.landmark.value,
-                              groupUuid: this.group.uuid,
-                              actionButtonText: 'Save Changes'
-                     };
+        this.provider ? provider = this.provider : provider = { person: { display: null, uuid: null } };
+        this.state = {
+            editType: 'Edit',
+            groupName: this.group.name,
+            groupNo: this.groupNumber.value,
+            facility: { label: this.group.location['display'], value: this.group.location['uuid'] },
+            groupType: { label: this.group.cohortType['name'], value: this.group.cohortType['uuid'] },
+            groupProgram: { label: program['name'], value: program['uuid'] },
+            provider: { label: provider.person.display, value: provider.person.uuid },
+            address: this.landmark.value,
+            groupUuid: this.group.uuid,
+            actionButtonText: 'Save Changes'
+        };
         this.modalRef = this.modalService.show(modal);
     }
 
     public onGroupDetailsUpdate(updatedGroup) {
-            this._group = updatedGroup;
-            this.updatedGroup.emit(updatedGroup);
-            this.modalRef.hide();
-            this.showSuccessModal('Successfully updated group ' + this.group.name);
+        this._group = updatedGroup;
+        this.updatedGroup.emit(updatedGroup);
+        this.modalRef.hide();
+        this.showSuccessModal('Successfully updated group ' + this.group.name);
     }
     public updateContactsUIState(updatedContacts, leader) {
         _.forEach(updatedContacts, (contact) => {
             const number = contact.value;
             switch (contact.attributeType.uuid) {
                 case PRIMARY_CONTACTS:
-                     leader['patientPhoneNumber'] = number;
-                     this.editLeaderForm.controls['contacts'].patchValue(number);
-                     if (this.currentLeader.person.uuid === leader.person.uuid) {
+                    leader['patientPhoneNumber'] = number;
+                    this.editLeaderForm.controls['contacts'].patchValue(number);
+                    if (this.currentLeader.person.uuid === leader.person.uuid) {
                         this.updateLeaderPhoneNumber(contact);
-                     }
-                     break;
+                    }
+                    break;
                 case SPOUSE_CONTACTS:
-                     leader['partnerPhoneNumber'] = number;
-                     break;
+                    leader['partnerPhoneNumber'] = number;
+                    break;
                 case ALT_CONTACTS:
-                     leader['alternativePhoneNumber'] = number;
-                     break;
+                    leader['alternativePhoneNumber'] = number;
+                    break;
                 case NEXT_OF_KIN_CONTACTS:
-                     leader['nextofkinPhoneNumber'] = number;
-                     break;
+                    leader['nextofkinPhoneNumber'] = number;
+                    break;
             }
         });
         return this.selectedLeader;
     }
 
     public updateLeaderPhoneNumber(contact) {
-        const  person = this.currentLeader.person;
+        const person = this.currentLeader.person;
         const index = _.findIndex(person.attributes,
             (attribute: any) => attribute.attributeType.uuid === contact.attributeType.uuid);
         if (_.isNumber(index)) {
             person.attributes[index] = contact;
-          } else {
+        } else {
             person.attributes.push(contact);
         }
         this.currentLeader.person = new Person(person);
@@ -460,24 +461,24 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
     public getContactAttributeTypeUuid(contactType: string) {
         switch (contactType) {
             case 'alternativePhoneNumber':
-                  return ALT_CONTACTS;
+                return ALT_CONTACTS;
             case 'patientPhoneNumber':
-                  return PRIMARY_CONTACTS;
+                return PRIMARY_CONTACTS;
             case 'partnerPhoneNumber':
-                  return SPOUSE_CONTACTS;
+                return SPOUSE_CONTACTS;
             case 'nextofkinPhoneNumber':
-                  return NEXT_OF_KIN_CONTACTS;
+                return NEXT_OF_KIN_CONTACTS;
         }
     }
 
     public updateAttribute(personUuid: string, attributeUuid: string, value: any) {
         return this.communityGroupMemberService
-                    .updatePersonAttribute(personUuid, attributeUuid, value);
+            .updatePersonAttribute(personUuid, attributeUuid, value);
     }
 
     public createAttribute(personUuid: string, attributeTypeUuid: string, value: any) {
         return this.communityGroupMemberService
-                    .createPersonAttribute(personUuid, attributeTypeUuid, value);
+            .createPersonAttribute(personUuid, attributeTypeUuid, value);
     }
 
     public updateGroupLeader(formValue: any) {
@@ -486,13 +487,13 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
         if (this.currentLeader) {
             if (this.currentLeader.person['uuid'] !== selectedLeaderUuid) {
                 const sub =
-                this.communityGroupLeaderService.updateGroupLeader(this.group['uuid'], this.currentLeader['leaderUuid'], selectedLeaderUuid)
-                .subscribe((res) => {
-                    this.showSuccessModal('Successfully changed leader for ' + this.group.name);
-                    this.reloadData();
-                },
-                (error) => { console.log(error); });
-        this.subscription.add(sub);
+                    this.communityGroupLeaderService.updateGroupLeader(this.group['uuid'], this.currentLeader['leaderUuid'], selectedLeaderUuid)
+                        .subscribe((res) => {
+                            this.showSuccessModal('Successfully changed leader for ' + this.group.name);
+                            this.reloadData();
+                        },
+                            (error) => { console.log(error); });
+                this.subscription.add(sub);
 
             }
         } else {
@@ -513,7 +514,7 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
             closeBtnText: 'Cancel',
             title: title
         };
-        this.modalRef = this.modalService.show(DatePickerModalComponent, {initialState});
+        this.modalRef = this.modalService.show(DatePickerModalComponent, { initialState });
     }
 
 
@@ -523,21 +524,21 @@ export class GroupDetailSummaryComponent implements OnInit, OnDestroy {
             this.group = res;
             this.updatedGroup.emit(this.group);
         },
-        (error) => (console.log(error)));
+            (error) => (console.log(error)));
         this.subscription.add(sub);
 
     }
 
     public getProgram(program: any) {
         if (program) {
-        const sub = this.programService.getProgramByUuid(program.value).subscribe((prog) => {
-             this.program = prog;
-        },
-        (error) => {
-            console.log(error);
-        });
-        this.subscription.add(sub);
-    }
+            const sub = this.programService.getProgramByUuid(program.value).subscribe((prog) => {
+                this.program = prog;
+            },
+                (error) => {
+                    console.log(error);
+                });
+            this.subscription.add(sub);
+        }
     }
 
     ngOnDestroy(): void {

@@ -10,7 +10,7 @@ import { Constants } from '../utils/constants';
 
 @Injectable()
 export class CommunityGroupService {
-  public cachedResults: BehaviorSubject<any[]> =  new BehaviorSubject([]) ;
+  public cachedResults: BehaviorSubject<any[]> = new BehaviorSubject([]);
   public v = 'full';
 
   constructor(private http: HttpClient,
@@ -43,9 +43,9 @@ export class CommunityGroupService {
 
   public getGroupByGroupNumber(groupNumber: string): Observable<any> {
     const params = new HttpParams()
-    .set('attributes', `"groupNumber":"${groupNumber}"`)
-    .set('v', this.v)
-    .set('cohortType', 'community_group');
+      .set('attributes', `"groupNumber":"${groupNumber}"`)
+      .set('v', this.v)
+      .set('cohortType', 'community_group');
 
     const url = this.getOpenMrsBaseUrl() + '/cohort';
     return this.http.get<any>(url, {
@@ -58,9 +58,9 @@ export class CommunityGroupService {
 
   public getGroupByName(name: string): Observable<any> {
     const params = new HttpParams()
-    .set('v', this.v)
-    .set('q', name)
-    .set('cohortType', 'community_group');
+      .set('v', this.v)
+      .set('q', name)
+      .set('cohortType', 'community_group');
 
     return this.http.get<any>(this.getOpenMrsBaseUrl() + '/cohort', {
       params: params
@@ -76,7 +76,7 @@ export class CommunityGroupService {
 
   public getCohortTypes(): Observable<any> {
     const params = new HttpParams()
-    .set('v', this.v);
+      .set('v', this.v);
     const url = this.getOpenMrsBaseUrl() + '/cohorttype';
     return this.http.get<any>(url, {
       params: params
@@ -109,7 +109,7 @@ export class CommunityGroupService {
       'Content-Type': 'application/json'
     });
     const url = this.getOpenMrsBaseUrl() + '/cohort';
-    return this.http.post(url, JSON.stringify(payload), {headers});
+    return this.http.post(url, JSON.stringify(payload), { headers });
 
   }
 
@@ -121,7 +121,7 @@ export class CommunityGroupService {
       voided: true,
       voidReason: reason
     };
-    console.log(body);
+    // console.log(body);
     return this.http.post(url, body);
   }
 
@@ -138,7 +138,7 @@ export class CommunityGroupService {
       'Content-Type': 'application/json'
     });
     const url = this.getOpenMrsBaseUrl() + '/cohort/' + uuid;
-    return this.http.post(url, JSON.stringify(payload), {headers});
+    return this.http.post(url, JSON.stringify(payload), { headers });
 
   }
 
@@ -158,15 +158,15 @@ export class CommunityGroupService {
   }
 
   public startIndividualVisit(payload): any {
-    const url =  this.getOpenMrsBaseUrl() + `/cohortmembervisit`;
+    const url = this.getOpenMrsBaseUrl() + `/cohortmembervisit`;
     return this.http.post(url, payload);
   }
 
   public getGroupsByLandmark(landmark: string) {
     const params = new HttpParams()
-    .set('attributes', `"landmark":"${landmark}"`)
-    .set('v', this.v)
-    .set('cohortType', 'community_group');
+      .set('attributes', `"landmark":"${landmark}"`)
+      .set('v', this.v)
+      .set('cohortType', 'community_group');
 
     const url = this.getOpenMrsBaseUrl() + '/cohort';
     return this.http.get<any>(url, {
@@ -180,23 +180,23 @@ export class CommunityGroupService {
   public saveSearchResults(searchResults) {
     this.cachedResults.next(searchResults);
   }
-   public getPreviousSearchResults() {
-     return this.cachedResults.asObservable();
-   }
+  public getPreviousSearchResults() {
+    return this.cachedResults.asObservable();
+  }
 
-   public getGroupsByLocationUuid(locationUuid: string) {
+  public getGroupsByLocationUuid(locationUuid: string) {
     const params = new HttpParams()
-    .set('location', `${locationUuid}`)
-    .set('v', this.v);
+      .set('location', `${locationUuid}`)
+      .set('v', this.v);
     const url = this.getOpenMrsBaseUrl() + '/cohort';
-    return this.http.get<any>(url, {params}).pipe(map((response) => response.results));
-   }
+    return this.http.get<any>(url, { params }).pipe(map((response) => response.results));
+  }
 
-   public generateGroupNumber(locationUuid: string, test = 'true') {
-     const url =  `https://ngx.ampath.or.ke/group-idgen/generategroupnumber/${locationUuid}`;
-     const credentials = this.sessionStorageService.getItem(Constants.CREDENTIALS_KEY);
-     const params = new HttpParams().set('test', test);
-     const headers = new HttpHeaders().set('Authorization', `Basic ${credentials}`);
-     return this.http.get(url);
-   }
+  public generateGroupNumber(locationUuid: string, test = 'true') {
+    const url = `https://ngx.ampath.or.ke/group-idgen/generategroupnumber/${locationUuid}`;
+    const credentials = this.sessionStorageService.getItem(Constants.CREDENTIALS_KEY);
+    const params = new HttpParams().set('test', test);
+    const headers = new HttpHeaders().set('Authorization', `Basic ${credentials}`);
+    return this.http.get(url);
+  }
 }

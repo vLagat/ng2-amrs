@@ -1,4 +1,4 @@
-import { Component, OnInit, Output , EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommunityGroupService } from '../../openmrs-api/community-group-resource.service';
 import { LocationResourceService } from '../../openmrs-api/location-resource.service';
 import { ProviderResourceService } from '../../openmrs-api/provider-resource.service';
@@ -15,7 +15,7 @@ import { DepartmentProgramsConfigService } from '../../etl-api/department-progra
 import { ActivatedRoute } from '@angular/router';
 
 const DEFAULT_GROUP_TYPE = 'community_group';
-const HIV_DIFFERENTIATED_CARE_PROGRAM = {'label': 'HIV DIFFERENTIATED CARE PROGRAM', 'value': '334c9e98-173f-4454-a8ce-f80b20b7fdf0'};
+const HIV_DIFFERENTIATED_CARE_PROGRAM = { 'label': 'HIV DIFFERENTIATED CARE PROGRAM', 'value': '334c9e98-173f-4454-a8ce-f80b20b7fdf0' };
 @Component({
     selector: 'group-editor',
     templateUrl: './group-editor-component.html',
@@ -44,7 +44,7 @@ export class GroupEditorComponent implements OnInit {
     public groupProgram: any;
     public success = false;
     public message = '';
-    public busy  = false;
+    public busy = false;
     public providerLoading;
     public currentLoggedInProvider;
     public groupNumberPattern = /\d{5}-\d{5}/;
@@ -73,16 +73,16 @@ export class GroupEditorComponent implements OnInit {
 
 
     constructor(
-                private _communityService: CommunityGroupService,
-                private _providerResourceService: ProviderResourceService,
-                private _locationSservice: LocationResourceService,
-                private _communityAttributeService: CommunityGroupAttributeService,
-                private userResourceService: UserService,
-                private userLocationService: UserDefaultPropertiesService,
-                private providerResourceService: ProviderResourceService,
-                private programResourceService: ProgramResourceService,
-                private departmentProgramConfigService: DepartmentProgramsConfigService,
-                private route: ActivatedRoute) { }
+        private _communityService: CommunityGroupService,
+        private _providerResourceService: ProviderResourceService,
+        private _locationSservice: LocationResourceService,
+        private _communityAttributeService: CommunityGroupAttributeService,
+        private userResourceService: UserService,
+        private userLocationService: UserDefaultPropertiesService,
+        private providerResourceService: ProviderResourceService,
+        private programResourceService: ProgramResourceService,
+        private departmentProgramConfigService: DepartmentProgramsConfigService,
+        private route: ActivatedRoute) { }
 
     ngOnInit(): void {
         this.allFacilities();
@@ -102,7 +102,7 @@ export class GroupEditorComponent implements OnInit {
                 this.newLocation.emit(this.facility);
                 this.autoGenerateGroupNumber();
             }
-    });
+        });
     }
 
     private autoGenerateGroupNumber() {
@@ -113,30 +113,30 @@ export class GroupEditorComponent implements OnInit {
 
     public setUpProviderTypeAhead() {
         this.providerSuggest.pipe(debounceTime(350),
-        switchMap((term: string) => this.providerResourceService.searchProvider(term)))
-        .subscribe((data) => this.processProviders(data));
+            switchMap((term: string) => this.providerResourceService.searchProvider(term)))
+            .subscribe((data) => this.processProviders(data));
     }
 
     public fetchAllGroupNumbers() {
         this._communityAttributeService.getAttributesByAttributeType('groupNumber')
-        .subscribe((attributes) => {
-            _.forEach(attributes, (attribute) => {
-                this.allGroupNumbers.push(attribute.value);
+            .subscribe((attributes) => {
+                _.forEach(attributes, (attribute) => {
+                    this.allGroupNumbers.push(attribute.value);
+                });
             });
-        });
     }
 
     public allFacilities() {
 
         this._locationSservice.getLocations()
-        .subscribe((result: any) => {
-            this.facilities = result.map((location: any) => {
-                return {
-                     label : location.display,
-                     value: location.uuid
-                 };
+            .subscribe((result: any) => {
+                this.facilities = result.map((location: any) => {
+                    return {
+                        label: location.display,
+                        value: location.uuid
+                    };
+                });
             });
-        });
 
     }
     public selectProvider(provider) {
@@ -146,18 +146,18 @@ export class GroupEditorComponent implements OnInit {
     }
     public searchProvider(providerSearchTerm) {
         if (providerSearchTerm.length > 3) {
-        this._providerResourceService
-          .searchProvider(providerSearchTerm)
-          .subscribe((results) => {
-            if (results) {
-               this.processProviders(results);
-            }
-          });
-         }
-        if (providerSearchTerm.length === 0 ) {
-             this.selectedProviderUuid = '';
-         }
-     }
+            this._providerResourceService
+                .searchProvider(providerSearchTerm)
+                .subscribe((results) => {
+                    if (results) {
+                        this.processProviders(results);
+                    }
+                });
+        }
+        if (providerSearchTerm.length === 0) {
+            this.selectedProviderUuid = '';
+        }
+    }
 
 
 
@@ -176,15 +176,15 @@ export class GroupEditorComponent implements OnInit {
         this.busy = true;
         const formValid = this.formValid();
         if (formValid) {
-          this.creatingGroup.emit(true);
-          this.saving = true;
-          if (this.editType.toLowerCase() === 'edit') {
-              console.log(this.editType);
-              this.updateGroup();
-          }
-          if (this.editType.toLowerCase() === 'create') {
-              this.createGroup();
-          }
+            this.creatingGroup.emit(true);
+            this.saving = true;
+            if (this.editType.toLowerCase() === 'edit') {
+                // console.log(this.editType);
+                this.updateGroup();
+            }
+            if (this.editType.toLowerCase() === 'create') {
+                this.createGroup();
+            }
         } else {
             this.success = false;
             this.message = 'Please ensure you have filled all the fields';
@@ -198,11 +198,11 @@ export class GroupEditorComponent implements OnInit {
             .subscribe((result) => {
                 this.newGroup.emit(result);
             },
-            (error) => {
-                this.message = 'Error creating cohort group, kindly try again';
-                this.success = false;
-                this.busy = false;
-                        }
+                (error) => {
+                    this.message = 'Error creating cohort group, kindly try again';
+                    this.success = false;
+                    this.busy = false;
+                }
             );
 
     }
@@ -216,31 +216,31 @@ export class GroupEditorComponent implements OnInit {
             });
         }
         if (this.address !== '') {
-            attributes.push(  {
+            attributes.push({
                 cohortAttributeType: 'landmark',
                 value: this.address
             });
         }
         if (this.provider !== '') {
-            attributes.push(  {
+            attributes.push({
                 cohortAttributeType: 'provider',
                 value: this.provider['value']
             });
         }
         if (this.groupProgram !== '') {
-            attributes.push( {
+            attributes.push({
                 cohortAttributeType: 'programUuid',
                 value: this.groupProgram['value']
             });
         }
         const payLoad = {
-            name : this.groupName,
+            name: this.groupName,
             description: '',
             location: this.facility.value,
             startDate: Moment().format('YYYY-MM-DD'),
             cohortType: DEFAULT_GROUP_TYPE,
             groupCohort: true,
-            attributes : attributes
+            attributes: attributes
         };
         return payLoad;
     }
@@ -248,18 +248,18 @@ export class GroupEditorComponent implements OnInit {
     public updateGroup() {
         const payLoad = this.generatePayload();
         this._communityService.updateCohortGroup(payLoad, this.groupUuid)
-        .subscribe((results) => {
-            this.message = 'Cohort Group has been Succesfully Updated';
-            this.success = true;
-            this.busy = false;
-            this.updatedGroup.emit(results);
+            .subscribe((results) => {
+                this.message = 'Cohort Group has been Succesfully Updated';
+                this.success = true;
+                this.busy = false;
+                this.updatedGroup.emit(results);
 
-        },
-        (error) => {
-            this.message = 'Error updating cohort group, kindly try again';
-            this.success = false;
-            this.busy = false;
-        });
+            },
+                (error) => {
+                    this.message = 'Error updating cohort group, kindly try again';
+                    this.success = false;
+                    this.busy = false;
+                });
 
     }
 
@@ -280,66 +280,66 @@ export class GroupEditorComponent implements OnInit {
     }
     public formValid() {
         const payLoad = {
-            name : this.groupName,
+            name: this.groupName,
             description: '',
             location: this.facility,
             cohortType: DEFAULT_GROUP_TYPE,
             cohortProgram: this.groupProgram,
             groupNo: this.groupNo
         };
-       if (payLoad.name === '' || !payLoad.location
-        || !payLoad.cohortType || !payLoad.cohortProgram ||
-        payLoad.groupNo === '') {
+        if (payLoad.name === '' || !payLoad.location
+            || !payLoad.cohortType || !payLoad.cohortProgram ||
+            payLoad.groupNo === '') {
             return false;
-       } else {
-           return true;
-       }
+        } else {
+            return true;
+        }
     }
 
 
     public fetchProviderOptions(term: string = null) {
         if (!_.isNull(term)) {
-          this.providers = [];
-          this.providerLoading = true;
+            this.providers = [];
+            this.providerLoading = true;
         }
         const findProvider = this.providerResourceService.searchProvider(term, false);
         findProvider.subscribe(
-          (providers) => {
-            this.processProviders(providers);
-          },
-          (error) => {
-            console.error(error); // test case that returns error
-          }
+            (providers) => {
+                this.processProviders(providers);
+            },
+            (error) => {
+                console.error(error); // test case that returns error
+            }
         );
         return findProvider;
-      }
+    }
 
     private processProviders(providers) {
         this.providerLoading = false;
         const filteredProviders = _.filter(providers, (p: any) => !_.isNil(p.person));
         this.providers = filteredProviders.map((provider) => {
-        return {
-                    label: provider.person.display,
-                    value: provider.person.uuid
-                };
-            });
-          }
+            return {
+                label: provider.person.display,
+                value: provider.person.uuid
+            };
+        });
+    }
 
     public getLoggedInProvider() {
         const providerPersonUuid = this.userResourceService.getLoggedInUser().personUuid;
         this.providerResourceService.getProviderByPersonUuid(providerPersonUuid)
-        .subscribe((provider: any) => {
-            this.provider = {
-                label: provider.person.display,
-                value: providerPersonUuid
-            };
-        });
+            .subscribe((provider: any) => {
+                this.provider = {
+                    label: provider.person.display,
+                    value: providerPersonUuid
+                };
+            });
     }
 
     public getCurrentUserLocation() {
         const location = this.userLocationService.getCurrentUserDefaultLocationObject();
         if (location) {
-            this.facility = { label: location.display, value: location.uuid};
+            this.facility = { label: location.display, value: location.uuid };
         }
 
     }
@@ -348,7 +348,7 @@ export class GroupEditorComponent implements OnInit {
         this.groupProgram = HIV_DIFFERENTIATED_CARE_PROGRAM;
     }
 
-    public fetchDepartmentProgramConfig(onInit= false) {
+    public fetchDepartmentProgramConfig(onInit = false) {
         this.departmentProgramConfigService.getDartmentProgramsConfig().subscribe((response) => {
             const departments = [];
             const departmentUuids = Object.keys(response);
@@ -369,16 +369,16 @@ export class GroupEditorComponent implements OnInit {
     public getDepartmentByProgram(programUuid: string, departmentPrograms: any): string {
         let department = null;
         _.forEach(departmentPrograms, (dept) => {
-           const found = _.find(dept.programs, (program) => program.uuid === programUuid);
-           if (found) {
-               department = dept.name;
-           }
-           return _.isUndefined(found);
+            const found = _.find(dept.programs, (program) => program.uuid === programUuid);
+            if (found) {
+                department = dept.name;
+            }
+            return _.isUndefined(found);
         });
         return department;
     }
 
-    public filterProgramsByDepartment(departmentName, onInit= false) {
+    public filterProgramsByDepartment(departmentName, onInit = false) {
         if (!onInit) {
             this.groupProgram = null;
         }
@@ -386,20 +386,20 @@ export class GroupEditorComponent implements OnInit {
             const department = this.departmentPrograms.filter((dept) => dept.name === departmentName);
             const programs = department[0].programs;
             this.groupPrograms = programs.map((groupProgram: any) => ({
-                     label : groupProgram.name,
-                     value: groupProgram.uuid
-                 }));
+                label: groupProgram.name,
+                value: groupProgram.uuid
+            }));
         }
     }
 
 
     public createAndEmit() {
-      const payload = this.generatePayload();
-      this._communityService.createGroup(payload).subscribe((newGroup) =>
-      this.newGroup.emit(newGroup));
+        const payload = this.generatePayload();
+        this._communityService.createGroup(payload).subscribe((newGroup) =>
+            this.newGroup.emit(newGroup));
     }
     public onCancel() {
-      this.hide.emit(true);
+        this.hide.emit(true);
     }
 
     public onFacilityChanged(event) {

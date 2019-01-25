@@ -29,13 +29,13 @@
 <ul *ngIf="!todaysVitals" class="list-group">
   <li class="list-group-item">&nbsp;&nbsp;&nbsp;&nbsp;
     <span *ngIf="!dataLoaded && !loadingTodaysVitals">
-      <span>
-          <span [ngClass]="{'col-sm-6 col-xs-6': showAll}">
-              <strong class="text-primary"> Morisky </strong>
-              <span class="value">{{moriskyScore}}/{{MoriskyDenominator}}</span>
-            </span>
-      </span>
-      No vitals taken for the patient today</span>
+        <span>
+            <span [ngClass]="{'col-sm-6 col-xs-6': showAll}">
+                <strong class="text-primary"> Morisky </strong>
+                <span class="value">{{moriskyScore}}/{{MoriskyDenominator}}</span>
+              </span>
+        </span>
+              No vitals taken for the patient today</span>
     <div *ngIf="loadingTodaysVitals">
       <div class="fa fa-spinner fa-spin"></div> Loading today's vitals..
     </div>

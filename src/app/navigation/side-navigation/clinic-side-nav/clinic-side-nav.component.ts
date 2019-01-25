@@ -56,7 +56,7 @@ export class ClinicSideNavComponent implements OnInit, OnDestroy {
     public subscribeToRoutesChangeEvents() {
         this.changingRoutesSub =
             this.dynamicRoutesService.clinicRoutes.subscribe((next) => {
-                console.log('Clinic routes', next);
+                // console.log('Clinic routes', next);
                 this.routes = next;
                 if (this.routes && this.routes.length > 0) {
                     this.selectedRoute = this.routes[0];

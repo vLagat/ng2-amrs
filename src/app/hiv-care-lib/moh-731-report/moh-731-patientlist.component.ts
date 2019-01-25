@@ -1,5 +1,5 @@
 
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import {
   Component, OnInit, Input, Output, OnChanges,
   SimpleChange, EventEmitter
@@ -42,13 +42,13 @@ export class Moh731PatientListComponent implements OnInit, OnChanges {
   public _startDate;
   public _endDate;
   public busyIndicator: any = {
-     busy: false,
-     message: ''
+    busy: false,
+    message: ''
   };
 
   constructor(public route: ActivatedRoute,
-              private router: Router,
-              private moh731PatientListResourceService: Moh731PatientListResourceService) {
+    private router: Router,
+    private moh731PatientListResourceService: Moh731PatientListResourceService) {
   }
 
   public ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
@@ -64,19 +64,19 @@ export class Moh731PatientListComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.route
-    .queryParams
-    .subscribe((params) => {
-    if (params) {
-            this.params = params;
-            this.loadPatientList(this.params);
+      .queryParams
+      .subscribe((params) => {
+        if (params) {
+          this.params = params;
+          this.loadPatientList(this.params);
         }
-    }, (error) => {
+      }, (error) => {
         console.error('Error', error);
-    });
+      });
   }
 
   public loadPatientList(params: any) {
-    console.log('Params', params);
+    // console.log('Params', params);
     this.busyIndicator = {
       busy: true,
       message: 'Loading Patient List...please wait'

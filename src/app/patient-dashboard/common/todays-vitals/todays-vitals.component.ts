@@ -189,10 +189,11 @@ export class TodaysVitalsComponent implements OnInit, OnDestroy {
   }
 
   public getPreviousEncounters(encounters) {
-    let today = Moment().format('YYYY-MM-DD');
+    let today = Moment().format('YYYY-MM-DD-HH-mm');
+    // console.log('TIME', today);
     let previousEncounters = [];
     _.each(encounters, (encounter: any) => {
-      let encounterDate = Moment(encounter.encounterDatetime).format('YYYY-MM-DD');
+      let encounterDate = Moment(encounter.encounterDatetime).format('YYYY-MM-DD-HH-mm');
       let encounterType = encounter.encounterType.display;
       if (encounterType === 'ADULTRETURN') {
         var obj = encounters;
@@ -203,10 +204,10 @@ export class TodaysVitalsComponent implements OnInit, OnDestroy {
         const max_date: any[] = [];
 
         encounters_array.forEach((element) => {
-          if (Moment(element.encounterDatetime).format('YYYY-MM-DD') == today) {
+          if (Moment(element.encounterDatetime).format('YYYY-MM-DD-HH-mm') == today) {
             // nothing
           } else {
-            max_date.push(Moment(element.encounterDatetime).format('YYYY-MM-DD'));
+            max_date.push(Moment(element.encounterDatetime).format('YYYY-MM-DD-HH-mm'));
           }
         });
         if (encounterDate !== today && encounterDate === this.getMaximumDate(max_date)) {

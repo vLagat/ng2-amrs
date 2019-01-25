@@ -28,8 +28,8 @@ export class EditProgramLocationComponent implements OnInit {
   public message: string = '';
 
   constructor(private programManagerService: ProgramManagerService,
-              public route: ActivatedRoute,
-              private patientResourceService: PatientResourceService) {
+    public route: ActivatedRoute,
+    private patientResourceService: PatientResourceService) {
     this.dateEnrolled = moment().format('YYYY-MM-DD');
   }
 
@@ -52,7 +52,7 @@ export class EditProgramLocationComponent implements OnInit {
     };
     this.programManagerService.enrollPatient(payload).subscribe((newProgram) => {
       if (newProgram) {
-        console.log('newProgram', newProgram);
+        // console.log('newProgram', newProgram);
         this.locationChangeComplete.next([newProgram]);
       }
     }, (err) => {
@@ -76,22 +76,22 @@ export class EditProgramLocationComponent implements OnInit {
         this.updating = true;
         this.programManagerService.editProgramEnrollments('location', this.patient,
           this.programs, this.location.value).subscribe((programs) => {
-          if (programs) {
-            this.transferPreferedIdentifier().subscribe(() => {
-              this.updating = false;
-              this.hasError = false;
-              this.locationChangeComplete.next(programs);
-            }, (error) => {
-              this.hasError = true;
-              this.updating = false;
-              console.log(error);
-            });
-          }
-        }, (err) => {
-          console.log(err);
-          this.updating = false;
-          this.hasError = true;
-        });
+            if (programs) {
+              this.transferPreferedIdentifier().subscribe(() => {
+                this.updating = false;
+                this.hasError = false;
+                this.locationChangeComplete.next(programs);
+              }, (error) => {
+                this.hasError = true;
+                this.updating = false;
+                console.log(error);
+              });
+            }
+          }, (err) => {
+            console.log(err);
+            this.updating = false;
+            this.hasError = true;
+          });
       }
     } else {
       this.hasError = true;
@@ -122,7 +122,7 @@ export class EditProgramLocationComponent implements OnInit {
     const transferLocation = localStorage.getItem('transferLocation');
     if (transferLocation) {
       this.transferLocation = transferLocation;
-      this.location = {value: transferLocation};
+      this.location = { value: transferLocation };
     }
   }
 

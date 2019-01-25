@@ -1,5 +1,5 @@
 
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import * as Moment from 'moment';
@@ -59,12 +59,12 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
   private _datePipe: DatePipe;
 
   constructor(private appFeatureAnalytics: AppFeatureAnalytics,
-              private patientService: PatientService,
-              private orderResourceService: OrderResourceService,
-              private labelService: LabelService,
-              private clinicLabOrdersResourceService: ClinicLabOrdersResourceService,
-              private obsResourceService: ObsResourceService,
-              ) {
+    private patientService: PatientService,
+    private orderResourceService: OrderResourceService,
+    private labelService: LabelService,
+    private clinicLabOrdersResourceService: ClinicLabOrdersResourceService,
+    private obsResourceService: ObsResourceService,
+  ) {
     this._datePipe = new DatePipe('en-US');
   }
 
@@ -108,7 +108,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     let patientUuId = this.patient.uuid;
     this.orderResourceService.getOrdersByPatientUuid(patientUuId).pipe(
       take(1)).subscribe((result) => {
-        console.log('result', result);
+        // console.log('result', result);
         // this.getCorrespingLabOrdersFromAmrs(result.results);
         this.labPatient = result.results[0].patient;
         this.labEncouonters = result.results;
@@ -139,7 +139,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     this.clinicLabOrdersResourceService.getLabOrdersByPatientUuid(patientUuId).pipe(
       take(1)).subscribe((result) => {
         this.labOrdersEtl = result;
-        console.log('this.labOrdersEtl', this.labOrdersEtl);
+        // console.log('this.labOrdersEtl', this.labOrdersEtl);
         this.labOrdersEtl.sort((a, b) => {
           let key1 = a.date_activated;
           let key2 = b.date_activated;
@@ -180,7 +180,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     this.errors = [];
     if (order.sample_drawn === 'YES') {
       this.sampleCollected = 'a899b35c-1350-11df-a1f1-0026b9348838';
-      this.collectionDate  = this._datePipe.transform(
+      this.collectionDate = this._datePipe.transform(
         order.sample_collection_date, 'yyyy-MM-dd') as any;
       this.disableButton = false;
     }
@@ -194,7 +194,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
       || this.sampleCollected === '') {
       this.sampleCollected = ' ';
       this.disableButton = true;
-      this.maxDate =  this._datePipe.transform(
+      this.maxDate = this._datePipe.transform(
         new Date(), 'yyyy-MM-dd') as any;
       this.collectionDate = '' as any;
 
@@ -214,7 +214,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
       let clone = { sampleMessage: 'Sample collected is required' };
       this.errors.push(clone);
       this.errors = this.errors[0];
-      console.log('this.errors', this.errors);
+      // console.log('this.errors', this.errors);
       return;
     }
     if (this.collectionDate === '' as any) {
@@ -232,7 +232,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
       obsDatetime: this.toDateString(this.collectionDate)
 
     };
-    if (this.obsUuid !== null ) {
+    if (this.obsUuid !== null) {
 
       this.obsResourceService.voidObs(this.obsUuid).pipe(take(1)).subscribe(
         (success) => {
@@ -259,36 +259,36 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     }
 
     this.obsResourceService.saveObs(obsPayload).pipe(take(1)).subscribe(
-        (success) => {
-          if (success) {
-            this.displaySuccessAlert('saved successfully');
-            this.getCurrentlyLoadedPatient();
-            this.getLabOrdersByPatientUuid();
-            setTimeout(() => {
-              this.displaySampleDialog = false;
-            }, 1000);
-          }
-        },
-        (error) => {
-          console.error('error', error);
-          this.errors.push({
-            id: 'patient',
-            message: 'error posting obs'
-          });
-          this.displaySampleDialog = true;
+      (success) => {
+        if (success) {
+          this.displaySuccessAlert('saved successfully');
+          this.getCurrentlyLoadedPatient();
+          this.getLabOrdersByPatientUuid();
+          setTimeout(() => {
+            this.displaySampleDialog = false;
+          }, 1000);
         }
-      );
+      },
+      (error) => {
+        console.error('error', error);
+        this.errors.push({
+          id: 'patient',
+          message: 'error posting obs'
+        });
+        this.displaySampleDialog = true;
+      }
+    );
 
   }
   public onSampleSelectedChange(selected) {
     this.errors = [];
 
     if (selected.target.value === 'a899b42e-1350-11df-a1f1-0026b9348838') {
-       this.collectionDate  = this._datePipe.transform(
-         new Date(), 'yyyy-MM-dd') as any;
-       this.hideDateField = true;
-       this.disableButton = false;
-       this.errors = [];
+      this.collectionDate = this._datePipe.transform(
+        new Date(), 'yyyy-MM-dd') as any;
+      this.hideDateField = true;
+      this.disableButton = false;
+      this.errors = [];
 
     }
     if (selected.target.value === 'a899b35c-1350-11df-a1f1-0026b9348838') {
@@ -312,7 +312,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
     if (this.sampleCollected === 'a899b42e-1350-11df-a1f1-0026b9348838') {
       this.disableButton = false;
     }
-    if (this.collectionDate !== '' as any  && this.sampleCollected === '' ) {
+    if (this.collectionDate !== '' as any && this.sampleCollected === '') {
       this.disableButton = true;
 
     }
@@ -365,7 +365,7 @@ export class LabTestOrdersComponent implements OnInit, OnDestroy {
 
   private getCorrespingLabOrdersFromAmrs(result, uuid) {
     for (let i = 0; i < result.length; i++) {
-      if ( result[i].orderNumber === uuid) {
+      if (result[i].orderNumber === uuid) {
         this.currentOrder = null;
         this.displayDialog = true;
         this.currentOrder = result[i];

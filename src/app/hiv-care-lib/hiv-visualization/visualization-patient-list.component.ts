@@ -1,5 +1,5 @@
 
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
@@ -34,17 +34,17 @@ export class VisualizationPatientListComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
 
   constructor(private route: ActivatedRoute,
-              private router: Router,
-              private visualizationResourceService: ClinicalSummaryVisualizationResourceService,
-              private clinicalSummaryVisualizationService: ClinicalSummaryVisualizationService,
-              private dataAnalyticsDashboardService: DataAnalyticsDashboardService) {
+    private router: Router,
+    private visualizationResourceService: ClinicalSummaryVisualizationResourceService,
+    private clinicalSummaryVisualizationService: ClinicalSummaryVisualizationService,
+    private dataAnalyticsDashboardService: DataAnalyticsDashboardService) {
     /**
      * Please note that this is a workaround for the dashboardService delay
      * to give you the location UUID.
      * If a better way can be found, please consider
      */
     let urlPieces = window.location.hash.split('/');
-    let loc = {value: urlPieces[2]};
+    let loc = { value: urlPieces[2] };
     this.locationUuids = loc.value;
   }
 
@@ -82,8 +82,8 @@ export class VisualizationPatientListComponent implements OnInit, OnDestroy {
     this.dataAnalyticsDashboardService.getSelectedLocations().subscribe(
       (data) => {
         if (data) {
-          console.log('data---->>viz', data);
-          this.locationUuids =  this.getSelectedLocations( data.locations);
+          // console.log('data---->>viz', data);
+          this.locationUuids = this.getSelectedLocations(data.locations);
         }
 
       });

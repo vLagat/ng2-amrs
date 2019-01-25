@@ -1,5 +1,5 @@
 
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ZeroVlPipe } from './../../../shared/pipes/zero-vl-pipe';
 import { GridOptions } from 'ag-grid/main';
@@ -120,7 +120,7 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
           this.splitReportContent(this.imagingResults);
 
           this.fetchingResults = false;
-          }
+        }
       }, (err) => {
         this.fetchingResults = false;
         this.error = err;
@@ -134,18 +134,18 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
 
     this.radiologyImagingResourceService.getWadoImageUrl(this.patientIdentifier, order.id).pipe(
       take(1)).subscribe((url) => {
-        console.log('URL',url);
+        // console.log('URL',url);
 
         this.staticModal.show();
         this.imageToShow = url;
         this.fetchingResults = false;
       }, (error) => {
-        console.log('Error',error);
+        console.log('Error', error);
         this.fetchingResults = false;
         this.error = error;
       }
 
-    );
+      );
 
   }
   public fetchAllImageFromRefpacs() {
@@ -154,10 +154,10 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
         this.allImages = res.entry;
 
         let v = this.gitImageIds(this.allImages);
-        this.imagingResults = _.merge( v , this.imagingResults);
-        }, (error) => {
-          this.error = error;
-        }
+        this.imagingResults = _.merge(v, this.imagingResults);
+      }, (error) => {
+        this.error = error;
+      }
 
       );
 
@@ -166,7 +166,7 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
   public removeTags(strings, arr) {
     return arr ? strings.split('<').filter((val) => f(arr, val))
       .map((val) => f(arr, val)).join('') : strings.split('<')
-      .map((d) => d.split('>').pop()).join('');
+        .map((d) => d.split('>').pop()).join('');
     function f(array, value) {
       return array.map((d) => value.includes(d + '>'))
         .indexOf(true) !== -1 ? '<' + value : value.split('>')[1];
@@ -195,7 +195,7 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
   public splitReportContent(imagingResults) {
     let report = [];
     for (const i of imagingResults) {
-      let val =  _.split(i.report, ',', 3);
+      let val = _.split(i.report, ',', 3);
       i['report'] = Object.assign({}, val);
       report.push(i);
 
@@ -216,13 +216,13 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
     this.radiologyImagingResourceService.createRadiologyComments(payload).pipe(take(1)).subscribe((success) => {
       if (success) {
         this.displaySuccessAlert('comment saved successfully');
-        console.log('comments created successfully', success);
+        // console.log('comments created successfully', success);
       }
 
     },
       (error) => {
-      console.log('error', error);
-      this.errors.push({
+        console.log('error', error);
+        this.errors.push({
           id: 'patient',
           message: 'error adding comment'
         });
@@ -251,13 +251,13 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
       let data = i.resource;
       for (let r in data) {
         if (data.hasOwnProperty(r)) {
-            let lab = this.removeTags(data.text.div, ['/p']);
-            data['report'] = lab.replace(/<[^>]+>/g, ',');
-          }
-
+          let lab = this.removeTags(data.text.div, ['/p']);
+          data['report'] = lab.replace(/<[^>]+>/g, ',');
         }
-      tests.push(data);
+
       }
+      tests.push(data);
+    }
 
     return tests;
 
@@ -269,39 +269,41 @@ export class PatientImagingComponent implements OnInit, OnDestroy {
     this.radiologyImagingResourceService.getWadoImageUrl(this.patientIdentifier, order.id).pipe(
       take(1)).subscribe((url) => {
 
-  
 
-              this.imageToShow = url;
 
-              if (_.includes(this.isChecked, order.id)) {
-                _.remove(this.compareImages, {
-                  id: order.id
-                });
-                delete this.isChecked[order.id];
-              } else {
-                this.compareImages.push({image: this.imageToShow, id: order.id,
-                  dateReported: order.effectiveDateTime, report: order.code.text}) ;
-                this.isChecked[order.id] = order.id;
-              }
+        this.imageToShow = url;
 
-              if ( this.compareImages.length > 1) {
-                this.fetchingResults = true;
-                setTimeout(() => {
-                  this.staticModalCompare.show();
-                }, 500);
-
-              }
-
-              setTimeout(() => {
-                this.fetchingResults = false;
-              }, 1000);
-
-          this.fetchingResults = false;
-
-        }, (error) => {
-          this.fetchingResults = false;
-          this.error = error;
+        if (_.includes(this.isChecked, order.id)) {
+          _.remove(this.compareImages, {
+            id: order.id
+          });
+          delete this.isChecked[order.id];
+        } else {
+          this.compareImages.push({
+            image: this.imageToShow, id: order.id,
+            dateReported: order.effectiveDateTime, report: order.code.text
+          });
+          this.isChecked[order.id] = order.id;
         }
+
+        if (this.compareImages.length > 1) {
+          this.fetchingResults = true;
+          setTimeout(() => {
+            this.staticModalCompare.show();
+          }, 500);
+
+        }
+
+        setTimeout(() => {
+          this.fetchingResults = false;
+        }, 1000);
+
+        this.fetchingResults = false;
+
+      }, (error) => {
+        this.fetchingResults = false;
+        this.error = error;
+      }
 
       );
 

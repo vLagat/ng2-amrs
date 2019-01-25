@@ -57,7 +57,7 @@ export class UsefulLinksComponent implements OnInit {
       title: 'Information on Forms / Visit Type'
     });
 
-    console.log('formvisiturl', this.formVisitSearchUrl);
+    // console.log('formvisiturl', this.formVisitSearchUrl);
 
   }
 

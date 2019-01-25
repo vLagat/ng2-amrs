@@ -21,7 +21,7 @@ export class FormOrderMetaDataService {
 
         return this.formsOrder;
     }
-    public setFavouriteForm(name: string) {
+    public setFavouriteForm(name) {
         let formNames = this.getFavouriteForm();
         let obj = {
             name: name

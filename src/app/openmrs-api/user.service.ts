@@ -1,5 +1,5 @@
 
-import {map} from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { SessionStorageService } from '../utils/session-storage.service';
@@ -24,12 +24,12 @@ export class UserService {
   }
   // get all users
 
-  public getAllUsers(): Observable <any> {
+  public getAllUsers(): Observable<any> {
 
     let baseUrl = this.getOpenMrsBaseUrl();
     let url = baseUrl + 'user?v=custom:(uuid,display,person)';
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this._http.get<any>(url, {headers}).pipe(
+    return this._http.get<any>(url, { headers }).pipe(
       map((response) => {
         return response.results;
       }));
@@ -41,10 +41,10 @@ export class UserService {
 
   public searchUsers(searchText: string) {
     let params: HttpParams = new HttpParams()
-    .set('q', searchText)
-    .set('v', 'default');
+      .set('q', searchText)
+      .set('v', 'default');
 
-    let allCohortMembersUrl: string = this.baseOpenMrsUrl + 'user' ;
+    let allCohortMembersUrl: string = this.baseOpenMrsUrl + 'user';
 
     return this._http.get<any>(allCohortMembersUrl, {
       params: params
@@ -58,14 +58,14 @@ export class UserService {
 
   public getUserByUuid(uuid: string) {
     if (!uuid) {
-        return null;
-     }
+      return null;
+    }
     let c = 'custom:(uuid,display,person)';
-    console.log('getUserByUuid', uuid);
+    // console.log('getUserByUuid', uuid);
     let params: HttpParams = new HttpParams()
-    .set('v', c);
+      .set('v', c);
 
-    let userUrl: string = this.baseOpenMrsUrl + 'user/' + uuid ;
+    let userUrl: string = this.baseOpenMrsUrl + 'user/' + uuid;
 
     return this._http.get<any>(userUrl, {
       params: params

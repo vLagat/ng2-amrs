@@ -124,12 +124,12 @@ export class FormCreationDataResolverService implements Resolve<any> {
         this.providerResourceService
           .getProviderByPersonUuid(user.person.uuid)
           .subscribe(
-          (provider) => {
-            resolve(provider);
-          },
-          (error) => {
-            reject(error);
-          }
+            (provider) => {
+              resolve(provider);
+            },
+            (error) => {
+              reject(error);
+            }
           );
       } else {
         reject('User is required');
@@ -140,7 +140,7 @@ export class FormCreationDataResolverService implements Resolve<any> {
   private getPreviousEncounter(selectedEncounter: string, compiledFormSchema: any, ): Promise<any> {
     return new Promise((resolve, reject) => {
       if (selectedEncounter) {
-        console.log('no encounter for this form');
+        // console.log('no encounter for this form');
         resolve({});
       } else {
         if ((this.draftedForm.lastDraftedForm === null ||
@@ -182,12 +182,12 @@ export class FormCreationDataResolverService implements Resolve<any> {
       if (patientUuid) {
         this.hivSummaryResService.getHivSummary(patientUuid, 0, 5, true)
           .subscribe(
-          (results) => {
-            resolve(results);
-          },
-          (error) => {
-            reject(error);
-          }
+            (results) => {
+              resolve(results);
+            },
+            (error) => {
+              reject(error);
+            }
           );
 
       } else {

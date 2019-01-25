@@ -1,4 +1,4 @@
-import {take} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PatientService } from '../../services/patient.service';
 import { LabsResourceService } from '../../../etl-api/labs-resource.service';
@@ -50,10 +50,10 @@ export class LabResultComponent implements OnInit, OnDestroy {
 
   public generalRows = {
 
-    'hiv_viral_load' : {
+    'hiv_viral_load': {
       'test': 'HIV VL'
     },
-    'hiv_dna_pcr' : {
+    'hiv_dna_pcr': {
       'test': 'DNA PCR'
     },
     'hiv_rapid_test': {
@@ -62,22 +62,22 @@ export class LabResultComponent implements OnInit, OnDestroy {
     'cd4_count': {
       'test': 'CD4'
     },
-    'cd4_percent' : {
+    'cd4_percent': {
       'test': 'CD4%'
     },
-    'hemoglobin' : {
+    'hemoglobin': {
       'test': 'Hb'
     },
-    'ast' : {
+    'ast': {
       'test': 'AST'
     },
-    'creatinine' : {
+    'creatinine': {
       'test': 'Cr'
     },
-    'chest_xray' : {
+    'chest_xray': {
       'test': 'CXR'
     },
-    'lab_errors' : {
+    'lab_errors': {
       'test': 'Lab Errors'
     }
   };
@@ -215,18 +215,18 @@ export class LabResultComponent implements OnInit, OnDestroy {
 
   public ngOnInit() {
     this.loadingPatient = true;
-      this.subscription = this.patientService.currentlyLoadedPatient.subscribe(
-        (patient) => {
-          this.loadingPatient = false;
-          if (patient) {
-            this.patient = patient;
-            this.patientUuId = this.patient.person.uuid;
-            this.getHistoricalPatientLabResults(this.patientUuId,
-              { startIndex: this.nextStartIndex.toString(), limit: '20' });
-            this.getCurrentDepartment();
-          }
+    this.subscription = this.patientService.currentlyLoadedPatient.subscribe(
+      (patient) => {
+        this.loadingPatient = false;
+        if (patient) {
+          this.patient = patient;
+          this.patientUuId = this.patient.person.uuid;
+          this.getHistoricalPatientLabResults(this.patientUuId,
+            { startIndex: this.nextStartIndex.toString(), limit: '20' });
+          this.getCurrentDepartment();
         }
-      );
+      }
+    );
     // this.gridOptions.columnDefs = this.oncologyCols;
     // this.gridOptions.rowData = this.labResults;
 
@@ -239,21 +239,21 @@ export class LabResultComponent implements OnInit, OnDestroy {
   }
 
   public getCurrentDepartment() {
-      const path = this._route.snapshot.params['programClass'];
-      this.currentDepartment = path;
-      this.selectLabData(path);
+    const path = this._route.snapshot.params['programClass'];
+    this.currentDepartment = path;
+    this.selectLabData(path);
   }
   public selectLabData(department) {
 
     switch (department) {
       case 'oncology':
-         this.labRows = this.oncRows;
-         break;
+        this.labRows = this.oncRows;
+        break;
       case 'general':
-      this.labRows = this.mergeRows();
-         break;
+        this.labRows = this.mergeRows();
+        break;
       default:
-         this.labRows = this.generalRows;
+        this.labRows = this.generalRows;
 
     }
 
@@ -293,7 +293,7 @@ export class LabResultComponent implements OnInit, OnDestroy {
   }
   public formatDateField(result) {
     let tests = [];
-    for (let  data of result) {
+    for (let data of result) {
       let testDatetime;
       for (let r in data) {
         if (data.hasOwnProperty(r)) {
@@ -329,7 +329,7 @@ export class LabResultComponent implements OnInit, OnDestroy {
           if (!_.isEmpty(params.data.toolTip)) {
             return params.data.toolTip;
           } else {
-             return '';
+            return '';
           }
         }
       }
@@ -337,19 +337,19 @@ export class LabResultComponent implements OnInit, OnDestroy {
     ];
 
     _.each(this.labResults, (result: any) => {
-        const col = {
-          headerName: result.testDatetime,
-          width: 100,
-          field: result.testDatetime,
-          cellStyle: {
-            'text-align': 'left'
-          },
-          pinned: '',
-          tooltip: (params: any) => {
-            return '';
-          }
-        };
-        cols.push(col);
+      const col = {
+        headerName: result.testDatetime,
+        width: 100,
+        field: result.testDatetime,
+        cellStyle: {
+          'text-align': 'left'
+        },
+        pinned: '',
+        tooltip: (params: any) => {
+          return '';
+        }
+      };
+      cols.push(col);
     });
 
 
@@ -373,10 +373,10 @@ export class LabResultComponent implements OnInit, OnDestroy {
             rowData[key][dateTime] = result[key];
           }
         }
-       });
-     });
+      });
+    });
 
-     this.processRowData(rowData);
+    this.processRowData(rowData);
 
   }
 
@@ -386,7 +386,7 @@ export class LabResultComponent implements OnInit, OnDestroy {
 
     Object.keys(rowData).forEach((key, index) => {
       const testResults = rowData[key];
-      console.log();
+      // console.log();
       labRows.push(testResults);
     });
     this.labRowData = labRows;

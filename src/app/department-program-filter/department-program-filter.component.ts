@@ -1,7 +1,9 @@
 
-import {take} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, AfterViewInit, Output,
-  EventEmitter, Input, ChangeDetectorRef } from '@angular/core';
+import { take } from 'rxjs/operators';
+import {
+  Component, OnInit, OnDestroy, AfterViewInit, Output,
+  EventEmitter, Input, ChangeDetectorRef
+} from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import * as _ from 'lodash';
 import * as Moment from 'moment';
@@ -85,8 +87,8 @@ export class DepartmentProgramFilterComponent implements OnInit, OnDestroy, Afte
   public selectedLocation: any = [];
   public selectedFiltersOkay: boolean = true;
   public errorMsg: any = {
-      'status': false,
-      'message': ''
+    'status': false,
+    'message': ''
   };
 
   @Output() public filterSelected: EventEmitter<any> = new EventEmitter<any>();
@@ -109,16 +111,16 @@ export class DepartmentProgramFilterComponent implements OnInit, OnDestroy, Afte
       }
     });
     this.route
-    .queryParams
-    .subscribe((params) => {
-      if (params) {
-           setTimeout(() => {
+      .queryParams
+      .subscribe((params) => {
+        if (params) {
+          setTimeout(() => {
             this.loadFilterFromUrlParams(params);
-           }, 500);
-         }
-     }, (error) => {
+          }, 500);
+        }
+      }, (error) => {
         console.error('Error', error);
-     });
+      });
   }
 
   public ngAfterViewInit(): void {
@@ -139,125 +141,125 @@ export class DepartmentProgramFilterComponent implements OnInit, OnDestroy, Afte
     };
 
     if (params.locationUuids) {
-        this.location = [];
-        let locations = this.loadFilterFromMap(params.locationUuids, this.locationMap);
-        this.location = locations;
-        newParams.locationUuids = params.locationUuids;
-    }else {
-        newParams.locationUuids = [];
+      this.location = [];
+      let locations = this.loadFilterFromMap(params.locationUuids, this.locationMap);
+      this.location = locations;
+      newParams.locationUuids = params.locationUuids;
+    } else {
+      newParams.locationUuids = [];
     }
     if (params.startDate) {
-        this.selectedStartDate = params.startDate;
-        newParams.startDate = params.startDate;
-    }else {
-         newParams.startDate = this.selectedStartDate;
+      this.selectedStartDate = params.startDate;
+      newParams.startDate = params.startDate;
+    } else {
+      newParams.startDate = this.selectedStartDate;
     }
     if (params.endDate) {
-       this.selectedEndDate = params.endDate;
-       newParams.endDate = this.params.endDate;
-    }else {
+      this.selectedEndDate = params.endDate;
+      newParams.endDate = this.params.endDate;
+    } else {
       newParams.endDate = this.selectedEndDate;
     }
     if (params.programType) {
-       this.program = [];
-       let programTypes = this.loadFilterFromMap(params.programType, this.programMap);
-       if (this.showSelectedPrograms) {
-           this.program = programTypes;
-       }
-       newParams.programType = params.programType;
+      this.program = [];
+      let programTypes = this.loadFilterFromMap(params.programType, this.programMap);
+      if (this.showSelectedPrograms) {
+        this.program = programTypes;
+      }
+      newParams.programType = params.programType;
 
-    }else {
-         newParams.programType = [];
+    } else {
+      newParams.programType = [];
     }
     if (params.department) {
-        this.department = [];
-        let departmentTypes = this.loadFilterFromMap(params.department, this.departmentMap);
-        this.department = departmentTypes;
+      this.department = [];
+      let departmentTypes = this.loadFilterFromMap(params.department, this.departmentMap);
+      this.department = departmentTypes;
 
     }
 
     this.emitParams(newParams);
 
-}
-
-public isString(value) {
-  if (typeof value === 'string') {
-    return true;
-  } else {
-    return false;
   }
-}
 
-public loadFilterFromMap(values: any , map) {
- let filterArray = [];
- if (this.isString(values)) {
-   let selectedType = map.get(values);
-   filterArray.push(selectedType);
-   } else {
-     for (let value of values){
-       let selectedType = map.get(value);
-       filterArray.push(selectedType);
-     }
+  public isString(value) {
+    if (typeof value === 'string') {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-   }
- return filterArray;
+  public loadFilterFromMap(values: any, map) {
+    let filterArray = [];
+    if (this.isString(values)) {
+      let selectedType = map.get(values);
+      filterArray.push(selectedType);
+    } else {
+      for (let value of values) {
+        let selectedType = map.get(value);
+        filterArray.push(selectedType);
+      }
 
-}
+    }
+    return filterArray;
+
+  }
 
   public loadConfigs() {
     return new Promise((resolve, reject) => {
-    this.getLocations();
-    this.getDepartmentConfig();
-    this.getProgramVisitsConfig();
-    this.cd.detectChanges();
-    resolve('success');
+      this.getLocations();
+      this.getDepartmentConfig();
+      this.getProgramVisitsConfig();
+      this.cd.detectChanges();
+      resolve('success');
 
     });
 
   }
-    // get current location
+  // get current location
 
   public getLocations() {
     this._locationResourceService.getLocations().pipe(
-    take(1)).subscribe((location) => {
+      take(1)).subscribe((location) => {
         this.setLocations(location);
-    });
+      });
   }
 
   public setLocations(locations) {
-     let locationsArray: any = [];
-     let countiesArray: any = [];
-     let trackCounty: any = [];
-     let countyNo = 1;
-     _.each(locations, (location: any) => {
-          let specificCountyObj: any = { 'id': countyNo, 'itemName': location.stateProvince };
-          let specificLocation: any = { 'id': location.uuid, 'itemName': location.display};
-          if (location.stateProvince !== '') {
-            this.locationMap.set(location.uuid, specificLocation);
-            this.setCounties(specificCountyObj.itemName, specificLocation);
-            locationsArray.push(specificLocation);
-            if (_.includes(trackCounty, specificCountyObj.itemName) === false) {
-              countiesArray.push(specificCountyObj);
-              trackCounty.push(specificCountyObj.itemName);
-            }
-            countyNo++;
+    let locationsArray: any = [];
+    let countiesArray: any = [];
+    let trackCounty: any = [];
+    let countyNo = 1;
+    _.each(locations, (location: any) => {
+      let specificCountyObj: any = { 'id': countyNo, 'itemName': location.stateProvince };
+      let specificLocation: any = { 'id': location.uuid, 'itemName': location.display };
+      if (location.stateProvince !== '') {
+        this.locationMap.set(location.uuid, specificLocation);
+        this.setCounties(specificCountyObj.itemName, specificLocation);
+        locationsArray.push(specificLocation);
+        if (_.includes(trackCounty, specificCountyObj.itemName) === false) {
+          countiesArray.push(specificCountyObj);
+          trackCounty.push(specificCountyObj.itemName);
+        }
+        countyNo++;
 
-          }
-     });
-     this.locations = locationsArray;
-     this.counties = _.uniq(countiesArray);
+      }
+    });
+    this.locations = locationsArray;
+    this.counties = _.uniq(countiesArray);
   }
 
   public setCounties(county, location) {
     let countySavedObj: any = this.countyMap.get(county);
     if (typeof countySavedObj === 'undefined') {
-          let countyLocations = [];
-          countyLocations.push(location);
-          this.countyMap.set(county, countyLocations);
+      let countyLocations = [];
+      countyLocations.push(location);
+      this.countyMap.set(county, countyLocations);
     } else {
-          let countyLocations = countySavedObj;
-          countyLocations.push(location);
-          this.countyMap.set(county, countyLocations);
+      let countyLocations = countySavedObj;
+      countyLocations.push(location);
+      this.countyMap.set(county, countyLocations);
     }
 
   }
@@ -285,7 +287,7 @@ public loadFilterFromMap(values: any , map) {
 
   public initializeParams() {
     this.selectedStartDate = Moment().startOf('month').format('YYYY-MM-DD');
-    this.selectedEndDate  = Moment().endOf('month').format('YYYY-MM-DD');
+    this.selectedEndDate = Moment().endOf('month').format('YYYY-MM-DD');
     this.selectedProgramType = [];
     this.selectedProgramType = [];
     this.params = {
@@ -300,47 +302,47 @@ public loadFilterFromMap(values: any , map) {
 
   public setParams() {
 
-      let startDate = Moment(this.selectedStartDate).format('YYYY-MM-DD');
-      let endDate = Moment(this.selectedEndDate).format('YYYY-MM-DD');
-      let programUuids = [];
-      let departmentUuid = [];
+    let startDate = Moment(this.selectedStartDate).format('YYYY-MM-DD');
+    let endDate = Moment(this.selectedEndDate).format('YYYY-MM-DD');
+    let programUuids = [];
+    let departmentUuid = [];
 
-      if (this.department.length > 0 && this.program.length === 0) {
-          this.showSelectedPrograms = false;
-          _.each(this.programs, (program: any) => {
-              programUuids.push(program.id);
-          });
-          _.each(this.department, (department: any) => {
-            departmentUuid.push(department.id);
-          });
-
-      }else if (this.department.length > 0 && this.program.length > 0) {
-          this.showSelectedPrograms = true;
-          _.each(this.program, (program: any) => {
-            programUuids.push(program.id);
-          });
-          _.each(this.department, (department: any) => {
-            departmentUuid.push(department.id);
-          });
-      } else {
-        this.showSelectedPrograms = false;
-
-      }
-      // get location ids
-      let locationUuids = [];
-      _.each(this.location, (locationItem: any) => {
-          locationUuids.push(locationItem.id);
+    if (this.department.length > 0 && this.program.length === 0) {
+      this.showSelectedPrograms = false;
+      _.each(this.programs, (program: any) => {
+        programUuids.push(program.id);
+      });
+      _.each(this.department, (department: any) => {
+        departmentUuid.push(department.id);
       });
 
-      this.params = {
-        'startDate': startDate,
-        'endDate': endDate,
-        'locationUuids': locationUuids,
-        'programType':  programUuids,
-        'department': departmentUuid
+    } else if (this.department.length > 0 && this.program.length > 0) {
+      this.showSelectedPrograms = true;
+      _.each(this.program, (program: any) => {
+        programUuids.push(program.id);
+      });
+      _.each(this.department, (department: any) => {
+        departmentUuid.push(department.id);
+      });
+    } else {
+      this.showSelectedPrograms = false;
 
-      };
-      this.passParamsToUrl(this.params);
+    }
+    // get location ids
+    let locationUuids = [];
+    _.each(this.location, (locationItem: any) => {
+      locationUuids.push(locationItem.id);
+    });
+
+    this.params = {
+      'startDate': startDate,
+      'endDate': endDate,
+      'locationUuids': locationUuids,
+      'programType': programUuids,
+      'department': departmentUuid
+
+    };
+    this.passParamsToUrl(this.params);
 
   }
 
@@ -348,8 +350,8 @@ public loadFilterFromMap(values: any , map) {
 
     const currentParams = this.route.snapshot.queryParams;
     let navigationData = {
-        queryParams: params,
-        replaceUrl: true
+      queryParams: params,
+      replaceUrl: true
     };
 
     let currentUrl = this.router.url;
@@ -366,30 +368,30 @@ public loadFilterFromMap(values: any , map) {
     this.filterSet = true;
     let isFilterOkay = this.validateFilterSelected();
     if (isFilterOkay === true) {
-        this.setParams();
+      this.setParams();
     } else {
-        this.selectedFiltersOkay = false;
+      this.selectedFiltersOkay = false;
     }
     this.filterSet = false;
   }
 
   public validateFilterSelected() {
-        this.errorMsg = { 'status': false, 'message': '' };
-        if (this.selectedStartDate === null) {
-           this.selectedStartDate = Moment().startOf('month').format('YYYY-MM-DD');
-        }
-        if (this.selectedEndDate === null) {
-          this.selectedEndDate = Moment().endOf('month').format('YYYY-MM-DD');
-        }
-        if (this.selectedStartDate > this.selectedEndDate) {
-           console.log('End Date before start date');
-           this.errorMsg = {
-            'status': true,
-            'message': 'The End Date should not be earlier than the start date'
-           };
-           return false;
-        }
-        return true;
+    this.errorMsg = { 'status': false, 'message': '' };
+    if (this.selectedStartDate === null) {
+      this.selectedStartDate = Moment().startOf('month').format('YYYY-MM-DD');
+    }
+    if (this.selectedEndDate === null) {
+      this.selectedEndDate = Moment().endOf('month').format('YYYY-MM-DD');
+    }
+    if (this.selectedStartDate > this.selectedEndDate) {
+      // console.log('End Date before start date');
+      this.errorMsg = {
+        'status': true,
+        'message': 'The End Date should not be earlier than the start date'
+      };
+      return false;
+    }
+    return true;
   }
   public collapseFilters() {
     this.showFilters = false;
@@ -434,7 +436,7 @@ public loadFilterFromMap(values: any , map) {
   }
   public loadLocationsFromCounty(county) {
     let countyLocations = this.countyMap.get(county);
-    this.location =  [];
+    this.location = [];
     _.each(countyLocations, (countyLocation) => {
       this.location.push(countyLocation);
     });
@@ -448,15 +450,15 @@ public loadFilterFromMap(values: any , map) {
 
     let countyLocations = (this.countyMap.get(county)).reverse();
     _.each(countyLocations, (countyLocation: any) => {
-        let locationId = countyLocation.id;
-        _.each(this.location, (location: any, index) => {
-              let selectedLocationId = location.id;
-              if (selectedLocationId === locationId) {
+      let locationId = countyLocation.id;
+      _.each(this.location, (location: any, index) => {
+        let selectedLocationId = location.id;
+        if (selectedLocationId === locationId) {
 
-                  this.location.splice(index, 1);
-              }
+          this.location.splice(index, 1);
+        }
 
-        });
+      });
     });
 
   }
@@ -549,7 +551,7 @@ public loadFilterFromMap(values: any , map) {
     let programsVisitsConf = this.programVisitsConfig;
 
     _.each(programsVisitsConf, (program: any, index) => {
-      let specificProgram = { 'id': index,  'itemName': program.name };
+      let specificProgram = { 'id': index, 'itemName': program.name };
       this.programMap.set(index, specificProgram);
       allPrograms.push(specificProgram);
     });

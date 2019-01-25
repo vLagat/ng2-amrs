@@ -11,7 +11,7 @@ gitInfo.version = version;
 gitInfo.buildDate = new Date();
 const file = resolve(__dirname, '.', 'src', 'environments', 'version.ts');
 writeFileSync(file,
-`// IMPORTANT: THIS FILE IS AUTO GENERATED! DO NOT MANUALLY EDIT OR CHECKIN!
+    `// IMPORTANT: THIS FILE IS AUTO GENERATED! DO NOT MANUALLY EDIT OR CHECKIN!
 /* tslint:disable */
 export const VERSION = ${JSON.stringify(gitInfo, null, 4)};
 /* tslint:enable */
