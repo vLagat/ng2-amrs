@@ -195,22 +195,10 @@ export class HivProgramSnapshotComponent implements OnInit {
   //       MORISKY MEDICATION ADHERENCE, TOTAL SCORE    ---- 857caa4e-b566-4a43-ab78-f911c1a8a727
 
   public getMoriskyScore() {
-    const allEnrolledProgram = [];
-    const enrolledPrograms = this.patient.enrolledPrograms;
-    _.each(enrolledPrograms, (enrolledProgram: any) => {
-      const enrolledProgramUuid = enrolledProgram.concept.uuid;
-      if (enrolledProgramUuid === '7c6f0599-3e3e-4f42-87a2-2ce66f1e96d0' ||
-      enrolledProgramUuid === 'a89ef6fa-1350-11df-a1f1-0026b9348838' ||
-      enrolledProgramUuid === 'ce562f55-bf51-4d00-9a2a-f56ca1a8bc34') {
-        this.hasMoriskyScore = true;
-      }
-      allEnrolledProgram.push(enrolledProgramUuid);
-    });
-
+    this.getAllProgramsWithMorisky();
     const previousEncounters = this.getPreviousEncounters(this.patient.encounters);
     this.getPreviousEncounterDetails(previousEncounters)
       .then((data) => {
-        console.log('DATA::>', data);
         this.obs = data[0].obs;
         this.obs.forEach((obs) => {
           const morisky4_concept_uuid = '315472dc-2b5e-4add-b3b7-bbcf21a8959b';
@@ -246,6 +234,17 @@ export class HivProgramSnapshotComponent implements OnInit {
       allEncounters.push(encounter);
     });
     return allEncounters;
+  }
+  // Function to get All Encounters
+  public getAllProgramsWithMorisky() {
+    const enrolledPrograms = this.patient.enrolledPrograms;
+    _.each(enrolledPrograms, (enrolledProgram: any) => {
+      const enrolledProgramUuid = enrolledProgram.concept.uuid;
+      if (enrolledProgramUuid === '7c6f0599-3e3e-4f42-87a2-2ce66f1e96d0' ||
+      enrolledProgramUuid === 'a89ef6fa-1350-11df-a1f1-0026b9348838') {
+        this.hasMoriskyScore = true;
+      }
+    });
   }
 
 // Function to get Previous Morisky Encounter Details
@@ -301,7 +300,6 @@ export class HivProgramSnapshotComponent implements OnInit {
 
     });
   }
-
 // Function to get Morisky 4
   public getMorisky4() {
     this.moriskyScore = this.moriskyScore4;
